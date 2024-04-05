@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://cax5ua5uudg3t"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_ph2ca"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bkvx4"]
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+platform_floor_layers = 0
+script = ExtResource("1_ph2ca")
+metadata/_edit_vertical_guides_ = [-50.0, 50.0, -25.0, 25.0, 0.0]
+metadata/_edit_horizontal_guides_ = [-25.0, 30.0]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+
+[node name="Polygon2D Front" type="Polygon2D" parent="CanvasGroup"]
+position = Vector2(0, 3.8147e-06)
+polygon = PackedVector2Array(0, -58, -22, -8, 22, -8)
+
+[node name="Polygon2D2" type="Polygon2D" parent="CanvasGroup/Polygon2D Front"]
+position = Vector2(0, -8)
+scale = Vector2(0.648, 0.648)
+color = Color(0.168627, 0.466667, 0.72549, 1)
+polygon = PackedVector2Array(0, -58, -21.6049, -9.25926, 0, -3.08642, 21.6049, -9.25926)
+
+[node name="Polygon2D Body" type="Polygon2D" parent="CanvasGroup"]
+position = Vector2(0, 4.76837e-07)
+scale = Vector2(0.215087, 0.267631)
+offset = Vector2(-237.113, -11.2094)
+polygon = PackedVector2Array(4.64926, -82.2026, 237.113, -26.1554, 469.577, -82.2026, 353.345, 11.2094, 469.577, 123.304, 237.113, 93.412, 4.64926, 123.304, 120.881, 11.2094)
+
+[node name="Polygon2D" type="Polygon2D" parent="CanvasGroup/Polygon2D Body"]
+position = Vector2(0, 4.76837e-07)
+scale = Vector2(0.69258, 0.693164)
+color = Color(0.585062, 0.585062, 0.585062, 1)
+offset = Vector2(-237.113, -11.2094)
+polygon = PackedVector2Array(-85.1104, -118.162, 237.113, -10.3525, 559.336, -118.162, 331.095, 11.2094, 559.336, 167.533, 331.095, 108.238, 237.113, 65.1142, 143.131, 108.238, -85.1104, 167.533, 143.131, 11.2094)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(2.4, 2.4)
+shape = SubResource("CircleShape2D_bkvx4")
