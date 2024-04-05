@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://mks4pkr7wjha"]
+
+[ext_resource type="Script" path="res://Player/player_bullet.gd" id="1_o6si6"]
+[ext_resource type="Texture2D" uid="uid://cs8bxnhmpahog" path="res://icon.svg" id="2_yqnro"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ktvs2"]
+radius = 19.2354
+
+[node name="Player_Bullet" type="Area2D"]
+top_level = true
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_o6si6")
+
+[node name="Icon" type="Sprite2D" parent="."]
+rotation = 0.523598
+scale = Vector2(0.3, 0.3)
+skew = 0.523599
+texture = ExtResource("2_yqnro")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ktvs2")
+debug_color = Color(0.980569, 0.127869, 0.129904, 0.42)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
