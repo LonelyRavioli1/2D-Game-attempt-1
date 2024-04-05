@@ -1,20 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://cpmv6j48rtluw"]
+[gd_scene load_steps=8 format=3 uid="uid://cpmv6j48rtluw"]
 
+[ext_resource type="Script" path="res://game.gd" id="1_4tamw"]
 [ext_resource type="Texture2D" uid="uid://cs8bxnhmpahog" path="res://icon.svg" id="1_cesil"]
-[ext_resource type="PackedScene" uid="uid://cax5ua5uudg3t" path="res://player.tscn" id="2_ck1of"]
+[ext_resource type="PackedScene" uid="uid://cg2mirvl183qe" path="res://Player/player.tscn" id="2_ck1of"]
 [ext_resource type="PackedScene" uid="uid://oymao8elq21l" path="res://world_border.tscn" id="3_ptrcm"]
 [ext_resource type="PackedScene" uid="uid://0ccce08whdp" path="res://gpu_particles_2d.tscn" id="4_1ofu1"]
-[ext_resource type="PackedScene" uid="uid://0wo0pruo8tu2" path="res://enemy.tscn" id="5_w0ggk"]
+[ext_resource type="PackedScene" uid="uid://b5k77wt5ytu5a" path="res://Enemy/enemy_spawn.tscn" id="6_5s8xk"]
 
-[sub_resource type="Curve2D" id="Curve2D_4dy46"]
+[sub_resource type="Curve2D" id="Curve2D_b088o"]
 _data = {
-"points": PackedVector2Array(49.6662, -255.121, -50, 250, 0, 0, 0, -100, -0.529732, 36.5515, 0, 500)
+"points": PackedVector2Array(0, 0, 0, 0, 100, -125, 0, 0, 0, 0, 1820, -125, 0, 0, 0, 0, 1820, -225, 0, 0, 0, 0, 100, -225, 0, 0, 0, 0, 100, -325, 0, 0, 0, 0, 1820, -325)
 }
-point_count = 2
+point_count = 6
 
 [node name="Game" type="Node2D"]
-metadata/_edit_vertical_guides_ = [960.0, 480.0, 1440.0, 1920.0, 0.0]
-metadata/_edit_horizontal_guides_ = [540.0, 0.0, 270.0, 810.0, 1080.0]
+script = ExtResource("1_4tamw")
+metadata/_edit_vertical_guides_ = [960.0, 480.0, 1440.0, 1920.0, 0.0, 100.0, 1820.0]
+metadata/_edit_horizontal_guides_ = [540.0, 0.0, 270.0, 810.0, 1080.0, -225.0, -125.0, -325.0]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
@@ -32,7 +34,18 @@ grow_vertical = 2
 color = Color(0.0470588, 0.0470588, 0.0470588, 1)
 
 [node name="GPUParticles2D" parent="CanvasLayer" instance=ExtResource("4_1ofu1")]
-position = Vector2(960, 320)
+position = Vector2(960, 325)
+speed_scale = 0.8
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.505882)
 
 [node name="Player" parent="." instance=ExtResource("2_ck1of")]
 position = Vector2(960, 810)
@@ -44,13 +57,44 @@ texture = ExtResource("1_cesil")
 
 [node name="WorldBorder" parent="." instance=ExtResource("3_ptrcm")]
 
+[node name="Enemy_Spawn" parent="." instance=ExtResource("6_5s8xk")]
+position = Vector2(960, -225)
+
 [node name="Path2D" type="Path2D" parent="."]
-position = Vector2(480, -231)
-curve = SubResource("Curve2D_4dy46")
+curve = SubResource("Curve2D_b088o")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-rotation = 1.76819
-loop = false
+unique_name_in_owner = true
+position = Vector2(100, -125)
 
-[node name="Enemy" parent="Path2D/PathFollow2D" instance=ExtResource("5_w0ggk")]
-rotation = -1.5708
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="Game_Over" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Game_Over"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.678431)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Game_Over"]
+z_index = 100
+z_as_relative = false
+y_sort_enabled = true
+offset_left = 852.0
+offset_top = 499.0
+offset_right = 939.0
+offset_bottom = 519.0
+scale = Vector2(2.5, 2.5)
+text = "Game Over"
+scroll_active = false
+shortcut_keys_enabled = false
+
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
